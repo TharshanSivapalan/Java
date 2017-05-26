@@ -6,10 +6,11 @@ import javax.swing.*;
 
 public class Rendu extends JFrame {
 
-    Panel panel = new Panel();
+    Panel panel;
 
     Rendu(int taille){
 
+        this.panel = new Panel(taille);
         this.setTitle("Simulation fourmis");
         this.setSize(taille, taille);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

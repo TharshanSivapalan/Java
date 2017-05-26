@@ -8,8 +8,11 @@ import java.awt.*;
  */
 public class Fourmi{
 
-    private int posX = 0;
-    private int posY = 0;
+    private int posX = 50;
+    private int posY = 50;
+
+    private int witdh = 4;
+    private int height = 4;
 
 
     public int getPosX() {
@@ -27,4 +30,21 @@ public class Fourmi{
     public void setPosY(int posY) {
         this.posY = posY;
     }
+
+    public int getWitdh() {
+        return witdh;
+    }
+
+    public void setWitdh(int witdh) {
+        this.witdh = witdh;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
 }
