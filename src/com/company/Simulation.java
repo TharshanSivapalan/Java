@@ -15,7 +15,7 @@ public class Simulation extends JFrame {
 
     int vitessePheromone = 3;
 
-    public Simulation(int taille, int nbFourmis, int nbFood, int vitesseExploration) {
+    public Simulation(int taille, int nbFourmis, int nbFood, int vitessePheromone) {
 
         this.limit = taille;
         fourmiliere = new Fourmiliere(limit);
@@ -27,12 +27,20 @@ public class Simulation extends JFrame {
         this.deplacement();
     }
 
+    /**
+     * init fourmis list
+     * @param nbFourmis
+     */
     private void fillFourmisList(int nbFourmis){
         for (int i = 0; i < nbFourmis; i++) {
-            fourmis.add(new Fourmi(fourmiliere));
+            fourmis.add(new Fourmi(fourmiliere, limit));
         }
     }
 
+    /**
+     * init foods list
+     * @param nbFood
+     */
     private void fillFoodsList(int nbFood){
         for (int i = 0; i < nbFood; i++) {
             foods.add(new Food(limit));
@@ -75,11 +83,6 @@ public class Simulation extends JFrame {
 
         int score = positions.get(0).getScore();
 
-        if (score >= 1 && positions.get(0).getPheromone().isGone()) {
-            fourmi.setPheromone(positions.get(0).getPheromone());
-            fourmi.choiceDirection();
-        }
-
         Iterator<Position> i = positions.iterator();
         while (i.hasNext()) {
             Position pos = i.next();
@@ -87,7 +90,6 @@ public class Simulation extends JFrame {
                 i.remove();
             }
         }
-
 
         return positions;
     }
@@ -99,30 +101,21 @@ public class Simulation extends JFrame {
 
             if (fourmi.getNourriture() == 0) {
 
-                if (fourmi.getPheromone() != null) {
-                    fourmi.followPheromone();
-                } else {
-                    ArrayList<Position> positions = allPositions(fourmi);
-                    // il faut shuffle avant car l'aleatoire pas suffisant
-                    Collections.shuffle(positions);
-                    Random randomGenerator = new Random();
-                    int rnd = randomGenerator.nextInt(positions.size());
+                ArrayList<Position> positions = allPositions(fourmi);
+                // il faut shuffle avant car l'aleatoire pas suffisant
+                Collections.shuffle(positions);
+                Random randomGenerator = new Random();
+                int rnd = randomGenerator.nextInt(positions.size());
 
-                    Position newPosition = positions.get(rnd);
+                Position newPosition = positions.get(rnd);
 
-                    fourmi.setPosX(newPosition.getX());
-                    fourmi.setPosY(newPosition.getY());
-
-                }
-
+                fourmi.setPosX(newPosition.getX());
+                fourmi.setPosY(newPosition.getY());
                 checkFood(fourmi);
 
-            } else if (fourmi.getPheromone().getScore() == 1){
-                goToFourmilliere(fourmi);
             } else {
-                fourmi.followPheromone();
+                goToFourmilliere(fourmi);
             }
-
         }
 
         Iterator<Food> i = foods.iterator();
@@ -144,18 +137,6 @@ public class Simulation extends JFrame {
                         ) {
                     food.takeNourriture();
                     fourmi.setNourriture(1);
-                    fourmi.setPosX(food.getX());
-                    fourmi.setPosY(food.getY());
-                    System.out.println("la");
-                    if (food.getPheromone() == null) {
-                        fourmi.setPheromone(new Pheromone(fourmi.getPosX(), fourmi.getPosY()));
-                        food.setPheromone(fourmi.getPheromone());
-                        pheromones.add(fourmi.getPheromone());
-                    } else {
-                        fourmi.setPheromone(food.getPheromone());
-                        fourmi.setDirection(0);
-                        food.getPheromone().increaseScore();
-                    }
                 }
             }
 
@@ -169,9 +150,8 @@ public class Simulation extends JFrame {
                 (fourmi.getPosY() == fourmiliere.getY() || fourmi.getPosY() + 4 == fourmiliere.getY() || (fourmi.getPosY() < fourmiliere.getY() && fourmi.getPosY() + 4 > fourmiliere.getY()))){
             fourmiliere.addNourriture();
             fourmi.setNourriture(0);
-            fourmi.getPheromone().setGone(true);
-            fourmi.setPheromone(null);
         } else {
+
             if (fourmiliere.getX() > fourmi.getPosX()){
                 fourmi.setPosX(fourmi.getPosX() + 1);
             } else if (fourmiliere.getX() < fourmi.getPosX()) {
@@ -184,8 +164,12 @@ public class Simulation extends JFrame {
                 fourmi.setPosY(fourmi.getPosY() - 1);
             }
 
-            fourmi.getPheromone().addPoint(fourmi.getPosX(), fourmi.getPosY());
+            // pose pheromone
         }
+    }
+
+    public void pheromonePropagation(){
+
     }
 
     public ArrayList<Fourmi> getFourmis() {

@@ -4,7 +4,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        int taille = 400;
+        int taille = 700;
         int sleepDuration = 3;
         int vitessePheromone = 3;
         int nbFourmis = 10;

@@ -9,25 +9,21 @@ public class Food {
 
     private int size;
 
-    private int x;
-    private int y;
-
-    private Pheromone pheromone = null;
+    private Point point = null;
 
     Food(int limit) {
-        Random randomGenerator = new Random();
+        Random randGene = new Random();
 
-        this.x = randomGenerator.nextInt(limit - 10) + 10;
-        this.y = randomGenerator.nextInt(limit - 10) + 10;
-        size = randomGenerator.nextInt(10 - 1) + 5;
+        point = new Point(randGene.nextInt(limit - 10) + 10, randGene.nextInt(limit - 10) + 10);
+        size = randGene.nextInt(10 - 1) + 5;
     }
 
     public int getX() {
-        return x;
+        return point.getX();
     }
 
     public int getY() {
-        return y;
+        return point.getY();
     }
 
     public int getSize() {
@@ -36,13 +32,5 @@ public class Food {
 
     public void takeNourriture(){
         size--;
-    }
-
-    public Pheromone getPheromone() {
-        return pheromone;
-    }
-
-    public void setPheromone(Pheromone pheromone) {
-        this.pheromone = pheromone;
     }
 }

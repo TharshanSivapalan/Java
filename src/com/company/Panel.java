@@ -39,13 +39,7 @@ public class Panel extends JPanel {
 
         g.setColor(Color.red);
         for (Pheromone pheromone : this.sim.getPheromones()) {
-            int x = pheromone.firstPoint().getX();
-            int y = pheromone.firstPoint().getY();
-            for (Point point : pheromone.getPoints()) {
-                g.drawLine(x, y, point.getX(), point.getY());
-                x = point.getX();
-                y = point.getY();
-            }
+            g.drawOval(pheromone.getPoint().getX(), pheromone.getPoint().getY(), 1, 1);
         }
     }
 

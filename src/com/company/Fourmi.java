@@ -10,38 +10,37 @@ import java.util.Random;
  */
 public class Fourmi{
 
-    private int posX = 50;
-    private int posY = 50;
+    private Point point = null;
 
     private int witdh = 4;
     private int height = 4;
 
     private int nourriture = 0;
-    private int direction;
 
     private Fourmiliere fourmiliere;
 
-    private Pheromone pheromone = null;
-
-    Fourmi (Fourmiliere fourmiliere){
+    Fourmi (Fourmiliere fourmiliere, int limit){
         this.fourmiliere = fourmiliere;
+        Random randGene = new Random();
+
+        this.point = new Point(randGene.nextInt(limit - 10) + 10, randGene.nextInt(limit - 10) + 10);
     }
 
 
     public int getPosX() {
-        return posX;
+        return point.getX();
     }
 
     public void setPosX(int posX) {
-        this.posX = posX;
+        this.point.setX(posX);
     }
 
     public int getPosY() {
-        return posY;
+        return point.getY();
     }
 
     public void setPosY(int posY) {
-        this.posY = posY;
+        this.point.setY(posY);
     }
 
     public int getWitdh() {
@@ -69,56 +68,8 @@ public class Fourmi{
         return nourriture;
     }
 
-    public Pheromone getPheromone() {
-        return pheromone;
-    }
-
-    public void setPheromone(Pheromone pheromone) {
-        this.pheromone = pheromone;
-    }
-
-    public int getDirection() {
-        return direction;
-    }
-
-    public void choiceDirection(){
-        Random randomGenerator = new Random();
-        direction = randomGenerator.nextInt(2);
-    }
-
-    public void setDirection(int direction) {
-        this.direction = direction;
-    }
-
-    public void followPheromone(){
-        Point pointFourmi = new Point(posX, posY);
-        int index = 0;
-
-        for (Point point: pheromone.getPoints()) {
-            if (point.same(pointFourmi)){
-                index = pheromone.getPoints().indexOf(point);
-            }
-        }
-
-        if (direction == 1 && index > 0){
-            index--;
-        } else if(direction == 0 && pheromone.getPoints().size() > index + 1) {
-            index++;
-        } else {
-            choiceDirection();
-        }
-
-        posX = pheromone.getPoints().get(index).getX();
-        posY = pheromone.getPoints().get(index).getY();
-
-        if (isFourmiliere()){
-         nourriture = 0;
-         fourmiliere.addNourriture();
-        }
-    }
-
     public boolean isFourmiliere(){
-        return fourmiliere.getX() == posX && fourmiliere.getY() == posY;
-
+        return (getPosX() == fourmiliere.getX() || getPosX() + 4 == fourmiliere.getX() || (getPosX() < fourmiliere.getX() && getPosX() + 4 > fourmiliere.getX())) &&
+                (getPosY() == fourmiliere.getY() || getPosY() + 4 == fourmiliere.getY() || (getPosY() < fourmiliere.getY() && getPosY() + 4 > fourmiliere.getY()));
     }
 }

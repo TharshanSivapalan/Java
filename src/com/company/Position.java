@@ -11,32 +11,26 @@ public class Position {
     private int score = 0;
 
     private String name;
-    private int limit;
 
     private Point point;
-    private Pheromone pheromone;
 
     Position(String name, int y, int x, int limit, ArrayList<Pheromone> pheromones){
 
         this.name = name;
         point = new Point(x, y);
-        this.limit = limit;
-        this.checkLimit();
+        this.checkLimit(limit);
         this.checkPheromone(pheromones);
     }
 
     private void checkPheromone(ArrayList<Pheromone> pheromones){
         for (Pheromone pheromone : pheromones) {
-            for (Point point : pheromone.getPoints()) {
-                if (point.same(getPoint())){
-                    score = pheromone.getScore();
-                    setPheromone(pheromone);
-                }
+            if (pheromone.getPoint().same(getPoint())){
+                score = pheromone.getScore();
             }
         }
     }
 
-    private void checkLimit(){
+    private void checkLimit(int limit){
         if (getX() <= 0 || getY() <= 0 || (getY() + 4) >= limit || (getX() + 4) >= limit) {
             score = -1;
         }
@@ -71,11 +65,4 @@ public class Position {
         return point;
     }
 
-    public void setPheromone(Pheromone pheromone) {
-        this.pheromone = pheromone;
-    }
-
-    public Pheromone getPheromone() {
-        return pheromone;
-    }
 }
