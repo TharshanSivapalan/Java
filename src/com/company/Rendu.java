@@ -12,7 +12,7 @@ public class Rendu extends JFrame {
 
         this.panel = new Panel(taille);
         this.setTitle("Simulation fourmis");
-        this.setSize(taille, taille);
+        this.setSize(taille, taille + 30);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);
         this.setContentPane(panel);
