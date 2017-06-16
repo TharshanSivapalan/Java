@@ -13,10 +13,11 @@ public class Simulation extends JFrame {
 
     int limit = 0;
 
-    int vitessePheromone = 3;
+    int vitessePheromone = 1;
 
     public Simulation(int taille, int nbFourmis, int nbFood, int vitessePheromone) {
 
+        this.vitessePheromone = vitessePheromone;
         this.limit = taille;
         fourmiliere = new Fourmiliere(limit);
         this.fillFourmisList(nbFourmis);
@@ -200,7 +201,7 @@ public class Simulation extends JFrame {
         Iterator<Pheromone> i = pheromones.iterator();
         while (i.hasNext()) {
             Pheromone phe = i.next();
-            phe.decreaseScore();
+            phe.decreaseScore(vitessePheromone);
             if(phe.getScore() <= 0){
                 i.remove();
             }

@@ -30,8 +30,8 @@ public class Pheromone {
         score += 3000;
     }
 
-    public void decreaseScore(){
-        score -= 1;
+    public void decreaseScore(int vitessePheromone){
+        score -= vitessePheromone;
     }
 
     public int getSize(){
