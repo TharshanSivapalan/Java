@@ -96,6 +96,10 @@ public class Simulation extends JFrame {
         return positions;
     }
 
+    public boolean hasFood(){
+        return foods.size() >= 1;
+    }
+
 
     private void deplacement () {
 

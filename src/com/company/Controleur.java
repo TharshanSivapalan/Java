@@ -11,9 +11,16 @@ public class Controleur {
 
         Rendu rendu = new Rendu(taille);
 
-        while (true) {
+        boolean execute = true;
+
+        while (execute) {
 
             sim.nextStep();
+
+            if (!sim.hasFood()){
+                execute = false;
+            }
+
             rendu.paint(sim);
 
             try {

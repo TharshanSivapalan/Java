@@ -8,7 +8,7 @@ public class Main {
         int sleepDuration = 3;
         int vitessePheromone = 3;
         int nbFourmis = 10;
-        int nbFood = 7;
+        int nbFood = 1;
 
         Controleur contro = new Controleur(taille, sleepDuration, vitessePheromone, nbFourmis, nbFood);
 
