@@ -14,6 +14,7 @@ public class Simulation extends JFrame {
     int limit = 0;
 
     int vitessePheromone = 1;
+    int i = 0;
 
     public Simulation(int taille, int nbFourmis, int nbFood, int vitessePheromone) {
 
@@ -124,6 +125,8 @@ public class Simulation extends JFrame {
                 int rnd = randomGenerator.nextInt(10);
 
                 if (rnd > 7 || newPosition == null) {
+                    System.out.println(" numero " + this.i++);
+                    System.out.println(positions.size());
                     Collections.shuffle(positions);
                     rnd = randomGenerator.nextInt(positions.size());
                     newPosition = positions.get(rnd);

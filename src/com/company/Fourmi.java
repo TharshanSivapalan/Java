@@ -21,7 +21,7 @@ public class Fourmi{
     Fourmi (int limit){
         Random randGene = new Random();
 
-        this.point = new Point(randGene.nextInt(limit - 10) + 10, randGene.nextInt(limit - 10) + 10);
+        this.point = new Point(limit - (limit / 2) - 15, limit - (limit / 2) - 15);
     }
 
 
