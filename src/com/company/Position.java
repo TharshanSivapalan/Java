@@ -65,4 +65,7 @@ public class Position {
         return point;
     }
 
+    public String getName() {
+        return name;
+    }
 }

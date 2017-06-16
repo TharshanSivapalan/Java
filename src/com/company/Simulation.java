@@ -25,6 +25,7 @@ public class Simulation extends JFrame {
 
     public void nextStep() {
         this.deplacement();
+        this.pheromonePropagation();
     }
 
     /**
@@ -33,7 +34,7 @@ public class Simulation extends JFrame {
      */
     private void fillFourmisList(int nbFourmis){
         for (int i = 0; i < nbFourmis; i++) {
-            fourmis.add(new Fourmi(fourmiliere, limit));
+            fourmis.add(new Fourmi(limit));
         }
     }
 
@@ -86,7 +87,7 @@ public class Simulation extends JFrame {
         Iterator<Position> i = positions.iterator();
         while (i.hasNext()) {
             Position pos = i.next();
-            if(pos.getScore() < score){
+            if(score >= 1 && pos.getScore() == 0 || pos.getScore() < 0){
                 i.remove();
             }
         }
@@ -103,14 +104,31 @@ public class Simulation extends JFrame {
 
                 ArrayList<Position> positions = allPositions(fourmi);
                 // il faut shuffle avant car l'aleatoire pas suffisant
-                Collections.shuffle(positions);
+
                 Random randomGenerator = new Random();
-                int rnd = randomGenerator.nextInt(positions.size());
+                Position newPosition = null;
 
-                Position newPosition = positions.get(rnd);
+                Iterator<Position> i = positions.iterator();
+                while (i.hasNext()) {
+                    Position pos = i.next();
+                    if(pos.getName() == fourmi.getNameExPosition()){
+                        newPosition = pos;
+                    }
+                }
 
+                int rnd = randomGenerator.nextInt(10);
+
+                if (rnd > 7 || newPosition == null) {
+                    Collections.shuffle(positions);
+                    rnd = randomGenerator.nextInt(positions.size());
+                    newPosition = positions.get(rnd);
+                }
+
+
+                fourmi.setNameExPosition(newPosition.getName());
                 fourmi.setPosX(newPosition.getX());
                 fourmi.setPosY(newPosition.getY());
+
                 checkFood(fourmi);
 
             } else {
@@ -152,24 +170,57 @@ public class Simulation extends JFrame {
             fourmi.setNourriture(0);
         } else {
 
-            if (fourmiliere.getX() > fourmi.getPosX()){
-                fourmi.setPosX(fourmi.getPosX() + 1);
-            } else if (fourmiliere.getX() < fourmi.getPosX()) {
-                fourmi.setPosX(fourmi.getPosX() - 1);
+            // rand pour un retour moin parfait
+            Random randomGenerator = new Random();
+            int rnd = randomGenerator.nextInt(10);
+
+            if (rnd <= 9){
+                if (fourmiliere.getX() > fourmi.getPosX()){
+                    fourmi.setPosX(fourmi.getPosX() + 1);
+                } else if (fourmiliere.getX() < fourmi.getPosX()) {
+                    fourmi.setPosX(fourmi.getPosX() - 1);
+                }
             }
 
-            if (fourmiliere.getY() > fourmi.getPosY()){
-                fourmi.setPosY(fourmi.getPosY() + 1);
-            } else if (fourmiliere.getY() < fourmi.getPosY()) {
-                fourmi.setPosY(fourmi.getPosY() - 1);
+            rnd = randomGenerator.nextInt(10);
+            if (rnd <= 9){
+                if (fourmiliere.getY() > fourmi.getPosY()){
+                    fourmi.setPosY(fourmi.getPosY() + 1);
+                } else if (fourmiliere.getY() < fourmi.getPosY()) {
+                    fourmi.setPosY(fourmi.getPosY() - 1);
+                }
             }
 
-            // pose pheromone
+
+            posePheromone(fourmi);
         }
     }
 
     public void pheromonePropagation(){
+        Iterator<Pheromone> i = pheromones.iterator();
+        while (i.hasNext()) {
+            Pheromone phe = i.next();
+            phe.decreaseScore();
+            if(phe.getScore() <= 0){
+                i.remove();
+            }
+        }
+    }
 
+    public void posePheromone(Fourmi fourmi){
+        if (!hasPheromone(fourmi)) {
+            pheromones.add(new Pheromone(fourmi.getPosX(), fourmi.getPosY()));
+        }
+    }
+
+    public boolean hasPheromone(Fourmi fourmi){
+        for (Pheromone pheromone : pheromones) {
+            if (fourmi.getPoint().same(pheromone.getPoint())) {
+                pheromone.increaseScore();
+                return true;
+            }
+        }
+        return false;
     }
 
     public ArrayList<Fourmi> getFourmis() {

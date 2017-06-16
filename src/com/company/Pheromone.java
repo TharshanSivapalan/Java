@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class Pheromone {
     Point point = null;
 
-    private int score = 1;
+    private int score = 3000;
 
     Pheromone (int x, int y){
         point = new Point(x, y);
@@ -27,6 +27,14 @@ public class Pheromone {
     }
 
     public void increaseScore(){
-        score++;
+        score += 3000;
+    }
+
+    public void decreaseScore(){
+        score -= 1;
+    }
+
+    public int getSize(){
+        return score / 300;
     }
 }

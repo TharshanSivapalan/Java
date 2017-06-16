@@ -16,11 +16,9 @@ public class Fourmi{
     private int height = 4;
 
     private int nourriture = 0;
+    private String nameExPosition = "";
 
-    private Fourmiliere fourmiliere;
-
-    Fourmi (Fourmiliere fourmiliere, int limit){
-        this.fourmiliere = fourmiliere;
+    Fourmi (int limit){
         Random randGene = new Random();
 
         this.point = new Point(randGene.nextInt(limit - 10) + 10, randGene.nextInt(limit - 10) + 10);
@@ -68,8 +66,17 @@ public class Fourmi{
         return nourriture;
     }
 
-    public boolean isFourmiliere(){
-        return (getPosX() == fourmiliere.getX() || getPosX() + 4 == fourmiliere.getX() || (getPosX() < fourmiliere.getX() && getPosX() + 4 > fourmiliere.getX())) &&
-                (getPosY() == fourmiliere.getY() || getPosY() + 4 == fourmiliere.getY() || (getPosY() < fourmiliere.getY() && getPosY() + 4 > fourmiliere.getY()));
+    public Point getPoint() {
+        return point;
     }
+
+    public String getNameExPosition(){
+        return nameExPosition;
+    }
+
+    public void setNameExPosition(String nameExPosition){
+        this.nameExPosition = nameExPosition;
+    }
+
+
 }
