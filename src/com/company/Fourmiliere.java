@@ -13,7 +13,7 @@ public class Fourmiliere {
 
     Fourmiliere(int limit){
         size = 30;
-        x = y = limit - (20 + size);
+        x = y = limit - (limit / 2) - 15;
     }
 
     public int getSize() {
