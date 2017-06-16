@@ -1,6 +1,5 @@
 package com.company;
 import java.awt.*;
-import java.util.Iterator;
 import javax.swing.JPanel;
 
 
@@ -39,9 +38,8 @@ public class Panel extends JPanel {
         }
 
         g.setColor(Color.red);
-        Iterator<Pheromone> i = this.sim.getPheromones().iterator();
-        while (i.hasNext()) {
-            Pheromone pheromone = i.next();
+        for (int i = 0; this.sim.getPheromones().size() > i; i++) {
+            Pheromone pheromone = this.sim.getPheromones().get(i);
             g.drawOval(pheromone.getPoint().getX(), pheromone.getPoint().getY(), pheromone.getSize(), pheromone.getSize());
         }
     }
