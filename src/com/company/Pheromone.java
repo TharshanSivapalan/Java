@@ -8,7 +8,8 @@ import java.util.ArrayList;
 public class Pheromone {
     Point point = null;
 
-    private int score = 3000;
+    private int score = 1000;
+    private boolean display = true;
 
     Pheromone (int x, int y){
         point = new Point(x, y);
@@ -27,7 +28,9 @@ public class Pheromone {
     }
 
     public void increaseScore(){
-        score += 3000;
+        if (score < 5000) {
+            score += 1000;
+        }
     }
 
     public void decreaseScore(int vitessePheromone){
@@ -35,6 +38,18 @@ public class Pheromone {
     }
 
     public int getSize(){
-        return score / 300;
+        return score / 100;
+    }
+
+    public boolean isDisplay() {
+        return display;
+    }
+
+    public void display(){
+        display = true;
+    }
+
+    public void displayNone(){
+        display = false;
     }
 }

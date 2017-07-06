@@ -2,6 +2,7 @@ package com.company;
 
 
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * Created by Camille on 26/05/2017.
@@ -14,7 +15,7 @@ public class Position {
 
     private Point point;
 
-    Position(String name, int y, int x, int limit, ArrayList<Pheromone> pheromones){
+    Position(String name, int y, int x, int limit, Map<String, Pheromone> pheromones){
 
         this.name = name;
         point = new Point(x, y);
@@ -22,11 +23,9 @@ public class Position {
         this.checkPheromone(pheromones);
     }
 
-    private void checkPheromone(ArrayList<Pheromone> pheromones){
-        for (Pheromone pheromone : pheromones) {
-            if (pheromone.getPoint().same(getPoint())){
-                score = pheromone.getScore();
-            }
+    private void checkPheromone(Map<String, Pheromone> pheromones){
+        if (pheromones.containsKey("x:"+getX()+"|y:"+getY())){
+            score = pheromones.get("x:"+getX()+"|y:"+getY()).getScore();
         }
     }
 

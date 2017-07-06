@@ -1,5 +1,8 @@
 package com.company;
 import java.awt.*;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 import javax.swing.JPanel;
 
 
@@ -24,7 +27,8 @@ public class Panel extends JPanel {
         g.fillRect(0, 0, this.taille, this.taille);
 
         g.setColor(Color.green);
-        for (Food food : this.sim.getFoods()) {
+        for (int i = 0; this.sim.getFoods().size() > i ; i++){
+            Food food = this.sim.getFoods().get(i);
             g.drawOval(food.getX(), food.getY(), food.getSize(), food.getSize());
         }
 
@@ -38,10 +42,14 @@ public class Panel extends JPanel {
         }
 
         g.setColor(Color.red);
-        for (int i = 0; this.sim.getPheromones().size() > i; i++) {
-            Pheromone pheromone = this.sim.getPheromones().get(i);
-            g.drawOval(pheromone.getPoint().getX(), pheromone.getPoint().getY(), pheromone.getSize(), pheromone.getSize());
+        for(Map.Entry<String, Pheromone> entry : this.sim.getPheromones().entrySet()) {
+            Pheromone pheromone = entry.getValue();
+
+            if (pheromone.isDisplay()){
+                g.drawOval(pheromone.getPoint().getX(), pheromone.getPoint().getY(), pheromone.getSize(), pheromone.getSize());
+            }
         }
+
     }
 
 
