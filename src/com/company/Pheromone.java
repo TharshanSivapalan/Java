@@ -34,7 +34,12 @@ public class Pheromone {
     }
 
     public void decreaseScore(int vitessePheromone){
-        score -= vitessePheromone;
+        if (score > 2000){
+            score -= vitessePheromone * 3;
+        } else {
+            score -= vitessePheromone;
+        }
+
     }
 
     public int getSize(){

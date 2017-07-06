@@ -208,8 +208,12 @@ public class Simulation extends JFrame {
         while(i.hasNext()){
             Map.Entry<String, Pheromone> map = i.next();
             if(map.getValue().getScore() <= 0){
+
                 map.getValue().displayNone();
             } else {
+                if(map.getValue().getScore() > 3000) {
+                    System.out.println(map.getKey());
+                }
                 map.getValue().decreaseScore(vitessePheromone);
                 map.getValue().display();
             }
@@ -217,11 +221,8 @@ public class Simulation extends JFrame {
     }
 
     public void posePheromone(Fourmi fourmi){
-        if (!((fourmi.getPosX() == fourmiliere.getX() || fourmi.getPosX() + 6 == fourmiliere.getX() || (fourmi.getPosX() < fourmiliere.getX() && fourmi.getPosX() + 6 > fourmiliere.getX())) &&
-                (fourmi.getPosY() == fourmiliere.getY() || fourmi.getPosY() + 6 == fourmiliere.getY() || (fourmi.getPosY() < fourmiliere.getY() && fourmi.getPosY() + 6 > fourmiliere.getY())))){
-            if (!hasPheromone(fourmi)) {
-                pheromones.put("x:"+fourmi.getPosX()+"|y:"+fourmi.getPosX(), new Pheromone(fourmi.getPosX(), fourmi.getPosY()));
-            }
+        if (!hasPheromone(fourmi)) {
+            pheromones.put("x:"+fourmi.getPosX()+"|y:"+fourmi.getPosX(), new Pheromone(fourmi.getPosX(), fourmi.getPosY()));
         }
     }
 

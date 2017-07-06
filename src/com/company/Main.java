@@ -12,7 +12,7 @@ public class Main {
         int taille = 1000;
         int sleepDuration = 3;
         int vitessePheromone = 10;
-        int nbFourmis = 1000;
+        int nbFourmis = 100;
         int nbFood = 10;
         //new Controleur(taille, sleepDuration, vitessePheromone, nbFourmis, nbFood);
 
