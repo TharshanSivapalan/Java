@@ -21,7 +21,7 @@ public class Controleur {
                 execute = false;
             }
 
-            rendu.paint(sim);
+            rendu.updatePaint(sim);
 
             try {
                 Thread.sleep(sleepDuration);

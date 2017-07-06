@@ -172,8 +172,6 @@ public class Simulation extends JFrame {
 
         if ((fourmi.getPosX() == fourmiliere.getX() || fourmi.getPosX() + 4 == fourmiliere.getX() || (fourmi.getPosX() < fourmiliere.getX() && fourmi.getPosX() + 4 > fourmiliere.getX())) &&
                 (fourmi.getPosY() == fourmiliere.getY() || fourmi.getPosY() + 4 == fourmiliere.getY() || (fourmi.getPosY() < fourmiliere.getY() && fourmi.getPosY() + 4 > fourmiliere.getY()))){
-            System.out.println(fourmi.getPosX());
-            System.out.println(fourmi.getPosY());
             fourmiliere.addNourriture();
             fourmi.setNourriture(0);
         } else {
@@ -219,8 +217,8 @@ public class Simulation extends JFrame {
     }
 
     public void posePheromone(Fourmi fourmi){
-        if ((fourmi.getPosX() == fourmiliere.getX() || fourmi.getPosX() + 6 == fourmiliere.getX() || (fourmi.getPosX() < fourmiliere.getX() && fourmi.getPosX() + 6 > fourmiliere.getX())) &&
-                (fourmi.getPosY() == fourmiliere.getY() || fourmi.getPosY() + 6 == fourmiliere.getY() || (fourmi.getPosY() < fourmiliere.getY() && fourmi.getPosY() + 6 > fourmiliere.getY()))){
+        if (!((fourmi.getPosX() == fourmiliere.getX() || fourmi.getPosX() + 6 == fourmiliere.getX() || (fourmi.getPosX() < fourmiliere.getX() && fourmi.getPosX() + 6 > fourmiliere.getX())) &&
+                (fourmi.getPosY() == fourmiliere.getY() || fourmi.getPosY() + 6 == fourmiliere.getY() || (fourmi.getPosY() < fourmiliere.getY() && fourmi.getPosY() + 6 > fourmiliere.getY())))){
             if (!hasPheromone(fourmi)) {
                 pheromones.put("x:"+fourmi.getPosX()+"|y:"+fourmi.getPosX(), new Pheromone(fourmi.getPosX(), fourmi.getPosY()));
             }
