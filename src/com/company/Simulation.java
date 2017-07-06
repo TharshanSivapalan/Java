@@ -7,27 +7,30 @@ import javax.swing.JFrame;
 public class Simulation extends JFrame {
 
     private ArrayList<Fourmi> fourmis = new ArrayList<Fourmi>();
-    private ArrayList<Food> foods = new ArrayList<Food>();
-    //private ArrayList<Pheromone> pheromones = new ArrayList<Pheromone>();
+    private Map<String, Food> foods = new HashMap<>();
     private Map<String, Pheromone> pheromones = new HashMap<>();
     private Fourmiliere fourmiliere;
 
     int limit = 0;
-
     int vitessePheromone = 1;
+    int nbFourmi = 1;
+    int nbFood = 1;
+    int scoreFood = 0;
+    Food food;
 
     public Simulation(int taille, int nbFourmis, int nbFood, int vitessePheromone) {
-
+        this.nbFourmi = nbFourmis;
+        this.nbFood = nbFood;
         this.vitessePheromone = vitessePheromone;
         this.limit = taille;
         fourmiliere = new Fourmiliere(limit);
         this.fillFourmisList(nbFourmis);
         this.fillFoodsList(nbFood);
+        this.initPheromone();
     }
 
     public void nextStep() {
         this.deplacement();
-        this.pheromonePropagation();
     }
 
     /**
@@ -45,10 +48,31 @@ public class Simulation extends JFrame {
      * @param nbFood
      */
     private void fillFoodsList(int nbFood){
+        Random randGene = new Random();
+        int x = 0;
+        int y = 0;
+        int score = 0;
         for (int i = 0; i < nbFood; i++) {
-            foods.add(new Food(limit));
+            x = randGene.nextInt(limit - 10) + 10;
+            y = randGene.nextInt(limit - 10) + 10;
+            score = randGene.nextInt(10 - 1) + 5;
+            this.scoreFood += score;
+            foods.put("x:"+x+"|y:"+y, new Food(new Point(x, y), score));
         }
     }
+
+    /**
+     * init pheromone
+     */
+    private void initPheromone(){
+        for (int i = 0; i <= limit; i++){
+            for (int j = 0; j <= limit; j++){
+                pheromones.put("x:"+i+"|y:"+j, new Pheromone(i, j));
+            }
+        }
+    }
+
+    /**********************    ***********************/
 
     private ArrayList<Position> allPositions(Fourmi fourmi){
         ArrayList<Position> positions = new ArrayList<Position>();
@@ -97,10 +121,12 @@ public class Simulation extends JFrame {
         return positions;
     }
 
-    public boolean hasFood(){
-        return foods.size() >= 1;
+    public boolean finishScript(){
+        if (fourmiliere.getNourriture() == this.scoreFood){
+            return true;
+        }
+        return false;
     }
-
 
     private void deplacement () {
 
@@ -142,29 +168,16 @@ public class Simulation extends JFrame {
             }
         }
 
-        Iterator<Food> i = foods.iterator();
-        while (i.hasNext()) {
-            Food food = i.next();
-            if(food.getSize() <= 0){
-                i.remove();
-            }
-        }
-
     }
 
     public void checkFood(Fourmi fourmi){
-        if (fourmi.getNourriture() == 0){
-            for (Food food : foods) {
-                if (
-                        (fourmi.getPosX() == food.getX() || fourmi.getPosX() + 4 == food.getX() || (fourmi.getPosX() < food.getX() && fourmi.getPosX() + 4 > food.getX())) &&
-                                (fourmi.getPosY() == food.getY() || fourmi.getPosY() + 4 == food.getY() || (fourmi.getPosY() < food.getY() && fourmi.getPosY() + 4 > food.getY()))
-                        ) {
-                    food.takeNourriture();
-                    fourmi.setNourriture(1);
-                }
+
+        if (foods.containsKey("x:"+fourmi.getPosX()+"|y:"+fourmi.getPosY())){
+            if (foods.get("x:"+fourmi.getPosX()+"|y:"+fourmi.getPosY()).noEmpty()){
+                foods.get("x:"+fourmi.getPosX()+"|y:"+fourmi.getPosY()).takeNourriture();
+                fourmi.setNourriture(1);
+                posePheromone(fourmi);
             }
-
-
         }
     }
 
@@ -177,24 +190,44 @@ public class Simulation extends JFrame {
         } else {
 
             // rand pour un retour moin parfait
-            Random randomGenerator = new Random();
-            int rnd = randomGenerator.nextInt(10);
 
-            if (rnd <= 9){
-                if (fourmiliere.getX() > fourmi.getPosX()){
-                    fourmi.setPosX(fourmi.getPosX() + 1);
-                } else if (fourmiliere.getX() < fourmi.getPosX()) {
-                    fourmi.setPosX(fourmi.getPosX() - 1);
-                }
-            }
+            if (fourmiliere.getX() == fourmi.getPosX()){
 
-            rnd = randomGenerator.nextInt(10);
-            if (rnd <= 9){
                 if (fourmiliere.getY() > fourmi.getPosY()){
                     fourmi.setPosY(fourmi.getPosY() + 1);
                 } else if (fourmiliere.getY() < fourmi.getPosY()) {
                     fourmi.setPosY(fourmi.getPosY() - 1);
                 }
+
+            } else if (fourmiliere.getY() == fourmi.getPosY()) {
+
+                if (fourmiliere.getX() > fourmi.getPosX()){
+                    fourmi.setPosX(fourmi.getPosX() + 1);
+                } else if (fourmiliere.getX() < fourmi.getPosX()) {
+                    fourmi.setPosX(fourmi.getPosX() - 1);
+                }
+
+            } else {
+
+                Random randomGenerator = new Random();
+                int rnd = randomGenerator.nextInt(10);
+
+                if (rnd >= 5){
+                    if (fourmiliere.getX() > fourmi.getPosX()){
+                        fourmi.setPosX(fourmi.getPosX() + 1);
+                    } else if (fourmiliere.getX() < fourmi.getPosX()) {
+                        fourmi.setPosX(fourmi.getPosX() - 1);
+                    }
+                }
+
+                if (rnd <= 5){
+                    if (fourmiliere.getY() > fourmi.getPosY()){
+                        fourmi.setPosY(fourmi.getPosY() + 1);
+                    } else if (fourmiliere.getY() < fourmi.getPosY()) {
+                        fourmi.setPosY(fourmi.getPosY() - 1);
+                    }
+                }
+
             }
 
 
@@ -202,43 +235,15 @@ public class Simulation extends JFrame {
         }
     }
 
-    public void pheromonePropagation(){
-        Set<Map.Entry<String, Pheromone>> setHm = pheromones.entrySet();
-        Iterator<Map.Entry<String, Pheromone>> i = setHm.iterator();
-        while(i.hasNext()){
-            Map.Entry<String, Pheromone> map = i.next();
-            if(map.getValue().getScore() <= 0){
-
-                map.getValue().displayNone();
-            } else {
-                if(map.getValue().getScore() > 3000) {
-                    System.out.println(map.getKey());
-                }
-                map.getValue().decreaseScore(vitessePheromone);
-                map.getValue().display();
-            }
-        }
-    }
-
     public void posePheromone(Fourmi fourmi){
-        if (!hasPheromone(fourmi)) {
-            pheromones.put("x:"+fourmi.getPosX()+"|y:"+fourmi.getPosX(), new Pheromone(fourmi.getPosX(), fourmi.getPosY()));
-        }
-    }
-
-    public boolean hasPheromone(Fourmi fourmi){
-        if (pheromones.containsKey("x:"+fourmi.getPosX()+"|y:"+fourmi.getPosX())){
-            pheromones.get("x:"+fourmi.getPosX()+"|y:"+fourmi.getPosX()).increaseScore();
-            return true;
-        }
-        return false;
+        pheromones.get("x:"+fourmi.getPosX()+"|y:"+fourmi.getPosY()).increaseScore();
     }
 
     public ArrayList<Fourmi> getFourmis() {
         return fourmis;
     }
 
-    public ArrayList<Food> getFoods() {
+    public Map<String, Food> getFoods() {
         return foods;
     }
 

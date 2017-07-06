@@ -6,15 +6,18 @@ public class Main {
 
     public static void main(String[] args) {
 
-        FenetreMenu fen = new FenetreMenu();
-        //fen.setVisible(true);
+        int taille = 500;
+        int sleepDuration = 1;
+        int vitessePheromone = 4;
+        int nbFourmis = 10000;
+        int nbFood = 5;
+        new Controleur(taille, sleepDuration, vitessePheromone, nbFourmis, nbFood);
 
-        int taille = 1000;
-        int sleepDuration = 3;
-        int vitessePheromone = 10;
-        int nbFourmis = 100;
-        int nbFood = 10;
-        //new Controleur(taille, sleepDuration, vitessePheromone, nbFourmis, nbFood);
+
+        //fen.setVisible(true);
+        //FenetreMenu fen = new FenetreMenu();
+
+
 
     }
 }

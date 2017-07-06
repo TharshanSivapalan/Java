@@ -5,19 +5,32 @@ package com.company;
  */
 public class Controleur {
 
+    boolean execute = true;
+    Simulation sim = null;
+    Rendu rendu = null;
+    int sleepDuration;
+    int taille;
+    int vitessePheromone;
+    int nbFourmis;
+    int nbFood;
+
     Controleur(int taille, int sleepDuration, int vitessePheromone, int nbFourmis, int nbFood) {
 
-        Simulation sim = new Simulation(taille, nbFourmis, nbFood, vitessePheromone);
+        long startTime = System.currentTimeMillis();
+        this.taille = taille;
+        this.vitessePheromone = vitessePheromone;
+        this.nbFourmis = nbFourmis;
+        this.nbFood = nbFood;
+        this.sleepDuration = sleepDuration;
 
-        Rendu rendu = new Rendu(taille);
-
-        boolean execute = true;
+        this.sim = new Simulation(taille, nbFourmis, nbFood, vitessePheromone);
+        this.rendu = new Rendu(taille);
 
         while (execute) {
 
             sim.nextStep();
 
-            if (!sim.hasFood()){
+            if (sim.finishScript()){
                 execute = false;
             }
 
@@ -29,6 +42,8 @@ public class Controleur {
                 e.printStackTrace();
             }
         }
+
+        new Resume(sim, (System.currentTimeMillis() - startTime));
 
     }
 }

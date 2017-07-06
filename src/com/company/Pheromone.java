@@ -8,8 +8,7 @@ import java.util.ArrayList;
 public class Pheromone {
     Point point = null;
 
-    private int score = 1000;
-    private boolean display = true;
+    private int score = 0;
 
     Pheromone (int x, int y){
         point = new Point(x, y);
@@ -47,14 +46,6 @@ public class Pheromone {
     }
 
     public boolean isDisplay() {
-        return display;
-    }
-
-    public void display(){
-        display = true;
-    }
-
-    public void displayNone(){
-        display = false;
+        return score > 0;
     }
 }

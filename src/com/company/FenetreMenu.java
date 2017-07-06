@@ -20,6 +20,8 @@ public class FenetreMenu extends JFrame implements ActionListener {
     private JPanel pan = new JPanel();
 
     public FenetreMenu() {
+
+
         this.setTitle("Menu de configuration");
         this.setSize(250,200);
 
@@ -87,12 +89,6 @@ public class FenetreMenu extends JFrame implements ActionListener {
                 int fourmis = Integer.parseInt(this.tFourmis.getText().trim());
                 int nourriture = Integer.parseInt(this.tNourriture.getText().trim());
 
-                int taille = 1000;
-                int sleepDuration = 3;
-                int vitessePheromone = 10;
-                int nbFourmis = 1000;
-                int nbFood = 10;
-                new Controleur(taille, sleepDuration, vitessePheromone, nbFourmis, nbFood);
                 this.dispose();
             }
         } else if(event.getSource() == this.bAnnulation) {

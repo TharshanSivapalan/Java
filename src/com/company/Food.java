@@ -11,11 +11,9 @@ public class Food {
 
     private Point point = null;
 
-    Food(int limit) {
-        Random randGene = new Random();
-
-        point = new Point(randGene.nextInt(limit - 10) + 10, randGene.nextInt(limit - 10) + 10);
-        size = randGene.nextInt(10 - 1) + 5;
+    Food(Point point, int size) {
+        this.point = point;
+        this.size = size;
     }
 
     public int getX() {
@@ -28,6 +26,10 @@ public class Food {
 
     public int getSize() {
         return size;
+    }
+
+    public boolean noEmpty(){
+        return this.size > 0;
     }
 
     public void takeNourriture(){

@@ -1,11 +1,13 @@
 package com.company;
 
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.util.Map;
+import java.awt.event.*;
 import javax.swing.*;
 
 
-public class Rendu extends JPanel {
+public class Rendu extends JPanel{
 
     private JFrame frame;
     Simulation sim;
@@ -21,14 +23,12 @@ public class Rendu extends JPanel {
         this.frame.setSize(this.taille, this.taille);
 
         this.contenu = this.frame.getContentPane();
-        //this.panel = new Panneau();
         contenu.add(this);
 
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         this.frame.setVisible(true);
     }
-
 
     public void updatePaint(Simulation sim){
         this.sim = sim;
@@ -41,8 +41,8 @@ public class Rendu extends JPanel {
         g.fillRect(0, 0, this.taille, this.taille);
 
         g.setColor(Color.green);
-        for (int i = 0; this.sim.getFoods().size() > i ; i++){
-            Food food = this.sim.getFoods().get(i);
+        for(Map.Entry<String, Food> entry : this.sim.getFoods().entrySet()) {
+            Food food = entry.getValue();
             g.drawOval(food.getX(), food.getY(), food.getSize(), food.getSize());
         }
 
@@ -60,6 +60,7 @@ public class Rendu extends JPanel {
             Pheromone pheromone = entry.getValue();
 
             if (pheromone.isDisplay()){
+                pheromone.decreaseScore( this.sim.vitessePheromone);
                 g.drawOval(pheromone.getPoint().getX(), pheromone.getPoint().getY(), pheromone.getSize(), pheromone.getSize());
             }
         }

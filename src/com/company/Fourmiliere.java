@@ -31,4 +31,8 @@ public class Fourmiliere {
     public void addNourriture(){
         nourriture++;
     }
+
+    public int getNourriture() {
+        return nourriture;
+    }
 }
